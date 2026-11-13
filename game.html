@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>بازی ستاره‌ها</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #0b1020; color: #fff;
+    font-family: sans-serif; overflow: hidden; touch-action: none; }
+  canvas { display: block; width: 100%; height: 100%; }
+  #hud { position: fixed; top: 8px; left: 0; right: 0; display: flex;
+    justify-content: space-between; padding: 0 16px; font-size: 18px; pointer-events: none; }
+  #msg { position: fixed; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center; gap: 12px;
+    background: rgba(0,0,0,.55); font-size: 22px; }
+  button { font-size: 20px; padding: 10px 28px; border: 0; border-radius: 12px;
+    background: #ffd54a; color: #222; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud"><span id="score">امتیاز: ۰</span><span id="lives">جان: ❤❤❤</span></div>
+<div id="msg"><div>⭐ بازی ستاره‌ها ⭐</div>
+  <div style="font-size:16px">سبد را با انگشتت حرکت بده و ستاره‌ها را بگیر.<br>بمب‌ها را نگیر!</div>
+  <button id="start">شروع</button></div>
+
+<script>
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const msg = document.getElementById('msg'), startBtn = document.getElementById('start');
+let W, H, player, items, score, lives, running, last, spawnT, best = 0;
+
+function resize() { W = cv.width = innerWidth; H = cv.height = innerHeight; }
+addEventListener('resize', resize); resize();
+
+function toFa(n) { return String(n).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]); }
+
+function reset() {
+  player = { x: W / 2, w: 90, h: 20 };
+  items = []; score = 0; lives = 3; spawnT = 0; last = performance.now();
+  updateHud();
+}
+function updateHud() {
+  document.getElementById('score').textContent = 'امتیاز: ' + toFa(score);
+  document.getElementById('lives').textContent = 'جان: ' + '❤'.repeat(Math.max(lives, 0));
+}
+function move(e) {
+  const t = e.touches ? e.touches[0] : e;
+  player.x = Math.min(Math.max(t.clientX, player.w / 2), W - player.w / 2);
+}
+addEventListener('touchmove', move, { passive: true });
+addEventListener('touchstart', move, { passive: true });
+addEventListener('mousemove', move);
+
+function spawn() {
+  const bomb = Math.random() < 0.25;
+  items.push({ x: 20 + Math.random() * (W - 40), y: -20, r: 14,
+    v: 120 + Math.random() * 100 + score * 2, bomb });
+}
+
+function loop(now) {
+  if (!running) return;
+  const dt = Math.min((now - last) / 1000, 0.05); last = now;
+  spawnT -= dt;
+  if (spawnT <= 0) { spawn(); spawnT = Math.max(0.35, 0.9 - score * 0.01); }
+
+  const py = H - 60;
+  for (const it of items) it.y += it.v * dt;
+  items = items.filter(it => {
+    const hit = it.y + it.r >= py && it.y - it.r <= py + player.h &&
+                Math.abs(it.x - player.x) <= player.w / 2 + it.r / 2;
+    if (hit) {
+      if (it.bomb) lives--; else score++;
+      updateHud(); return false;
+    }
+    if (it.y > H + 30) {
+      if (!it.bomb) { lives--; updateHud(); }
+      return false;
+    }
+    return true;
+  });
+  if (lives <= 0) return gameOver();
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#0b1020'; ctx.fillRect(0, 0, W, H);
+  ctx.font = '28px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  for (const it of items) ctx.fillText(it.bomb ? '💣' : '⭐', it.x, it.y);
+  ctx.fillStyle = '#4fc3f7';
+  ctx.fillRect(player.x - player.w / 2, py, player.w, player.h);
+  requestAnimationFrame(loop);
+}
+
+function gameOver() {
+  running = false;
+  best = Math.max(best, score);
+  msg.innerHTML = '<div>بازی تمام شد!</div><div>امتیاز: ' + toFa(score) +
+    '</div><div style="font-size:16px">بهترین امتیاز: ' + toFa(best) +
+    '</div><button id="start">دوباره</button>';
+  msg.style.display = 'flex';
+  document.getElementById('start').onclick = begin;
+}
+function begin() {
+  msg.style.display = 'none'; reset(); running = true;
+  requestAnimationFrame(loop);
+}
+startBtn.onclick = begin;
+</script>
+</body>
+</html>

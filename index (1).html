@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>سایت محمدرضا حقانی</title>
+<style>
+  :root { --bg:#0f172a; --card:#1e293b; --text:#e2e8f0; --muted:#94a3b8; --accent:#38bdf8; --accent2:#fbbf24; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text);
+    font-family: Tahoma, "Segoe UI", sans-serif; line-height:1.9; }
+  header { text-align:center; padding:56px 20px 40px;
+    background: linear-gradient(160deg,#1e3a8a,#0f172a 70%); }
+  .avatar { width:96px; height:96px; border-radius:50%; margin:0 auto 14px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:flex; align-items:center; justify-content:center; font-size:44px; }
+  h1 { margin:0 0 6px; font-size:28px; }
+  header p { margin:0; color:var(--muted); }
+  nav { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-top:22px; }
+  nav a { color:var(--text); text-decoration:none; padding:6px 16px;
+    border:1px solid #334155; border-radius:20px; font-size:15px; }
+  nav a:hover { background:var(--accent); color:#0f172a; border-color:var(--accent); }
+  main { max-width:760px; margin:0 auto; padding:24px 16px 60px; }
+  section { background:var(--card); border-radius:16px; padding:22px; margin-bottom:20px; }
+  h2 { margin:0 0 10px; font-size:21px; color:var(--accent); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; }
+  .box { background:#0f172a; border-radius:12px; padding:14px; }
+  .btn { display:inline-block; margin-top:10px; padding:10px 22px; border-radius:12px;
+    background:var(--accent2); color:#1f2937; text-decoration:none; font-weight:bold; }
+  footer { text-align:center; color:var(--muted); padding:20px; font-size:14px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="avatar">🎮</div>
+  <h1>محمدرضا حقانی</h1>
+  <p>سازنده‌ی محتوا و برنامه‌نویس جوان</p>
+  <nav>
+    <a href="#about">درباره‌ی من</a>
+    <a href="#channel">کانال یوتیوب</a>
+    <a href="#games">بازی‌ها</a>
+    <a href="#contact">ارتباط</a>
+  </nav>
+</header>
+
+<main>
+  <section id="about">
+    <h2>درباره‌ی من</h2>
+    <p>سلام! من محمدرضا هستم. دوست دارم ویدیو بسازم و برنامه‌نویسی یاد بگیرم.
+       اینجا کارهایم را می‌گذارم.</p>
+  </section>
+
+  <section id="channel">
+    <h2>کانال یوتیوب من</h2>
+    <p>ویدیوهای جدیدم را در کانال یوتیوب ببین و اگر خوشت آمد دنبال کن.</p>
+    <div class="grid">
+      <div class="box">🎬 ویدیوی اول<br><small>به‌زودی</small></div>
+      <div class="box">🎬 ویدیوی دوم<br><small>به‌زودی</small></div>
+      <div class="box">🎬 ویدیوی سوم<br><small>به‌زودی</small></div>
+    </div>
+    <!-- آدرس کانالت را به‌جای # بگذار -->
+    <a class="btn" href="#">رفتن به کانال</a>
+  </section>
+
+  <section id="games">
+    <h2>بازی‌های من</h2>
+    <div class="grid">
+      <div class="box">⭐ <b>بازی ستاره‌ها</b><br>ستاره‌ها را بگیر و از بمب‌ها فرار کن!
+        <br><a class="btn" href="game.html">بازی کن</a></div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>ارتباط با من</h2>
+    <p>نظر یا پیشنهادی داری؟ از طریق کانال یوتیوبم برایم کامنت بگذار.</p>
+  </section>
+</main>
+
+<footer>ساخته‌شده با ❤ توسط محمدرضا</footer>
+</body>
+</html>
